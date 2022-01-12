@@ -52,7 +52,7 @@ export default {
   },
   beforeMount() {
     this.fetchGeoJson();
-    this.disableRightClick();
+    this.setup();
   },
   methods: {
     async getData(id) {
@@ -79,14 +79,40 @@ export default {
       }
     },
 
-    disableRightClick() {
+    setup() {
+      document.body.style.overflow = "hidden";
       document.oncontextmenu = function () {
         return false;
       };
     },
-    onEachFeature(feature,layer) {
-      layer.bindPopup(feature.properties.name)
-    }
+    onEachFeature(feature, layer) {
+      layer.bindPopup(`Waiting for data from Node${feature.id}`, {
+        maxWidth: "auto",
+      });
+      layer.on("click", async function () {
+        const { data } = await NodeInfoRepo.getNodeInfo(feature.id);
+        console.log(data);
+
+        layer.bindPopup(
+          `<div> <ul class="list-group">
+  <li class="list-group-item">Cars: ${data.currentCars}</li>
+  <li class="list-group-item">Trucks: ${data.currentTrucks}</li>
+  <li class="list-group-item">Situation: ${data.trafficSituation}</li>
+</ul></div>`,
+          {
+            maxWidth: "400",
+            width: "200",
+            className: "custom-popup",
+          }
+        );
+
+        layer.closePopup();
+        layer.openPopup();
+
+        //console.log(data.tcnId);
+        //console.log(getData(feature.id));
+      });
+    },
   },
 };
 </script>
