@@ -86,8 +86,10 @@ export default {
       };
     },
     onEachFeature(feature, layer) {
-      layer.bindPopup(`Waiting for data from Node${feature.id}`, {
-        maxWidth: "auto",
+      layer.bindPopup(`Waiting for data from Node:\n${feature.id}`, {
+        maxWidth: "400",
+        width: "200",
+        className: "custom-popup",
       });
       layer.on("click", async function () {
         const { data } = await NodeInfoRepo.getNodeInfo(feature.id);
