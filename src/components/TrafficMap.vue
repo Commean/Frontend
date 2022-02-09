@@ -49,12 +49,13 @@ export default {
     },
     beforeMount() {
         this.fetchGeoJson();
-        this.setup();
+
+        // Disable right click on map
+        document.oncontextmenu = function () {
+            return false;
+        };
     },
     methods: {
-        async getData(id) {
-            return await NodeInfoRepo.getNodeInfo(id);
-        },
         async fetchGeoJson() {
             try {
                 const {
@@ -78,11 +79,6 @@ export default {
             }
         },
 
-        setup() {
-            document.oncontextmenu = function () {
-                return false;
-            };
-        },
         onEachFeature(feature, layer) {
             layer.bindPopup(`Waiting for data from Node:\n${feature.id}`, {
                 maxWidth: "400",
@@ -92,36 +88,31 @@ export default {
             layer.on("click", async function () {
                 const {
                     data
-                } = await NodeInfoRepo.getNodeInfo(feature.id);
-                console.log(data);
-
-                layer.bindPopup(
-                    `<div>
-                      <h3>${data.tcnId}</h3>
-                      <table>
-                        <tr>
-                          <th>Current</th>
-                          <td>${data.trafficSituation}</td>
-                        </tr>
-                        <tr>
-                          <th>Time loss</th>
-                          <td>${data.averageTimeInPicture}</td>
-                        </tr>
-                      </table>
-                    </div>`, {
-                        maxWidth: "400",
-                        width: "200",
-                        className: "custom-popup",
-                    }
-                );
-
-                layer.closePopup();
-                layer.openPopup();
-
-                //console.log(data.tcnId);
-                //console.log(getData(feature.id));
+                } = await getData(feature.id);
+                layer.setPopupContent(getPopup(data));
             });
         },
-    },
+
+    }
 };
+
+async function getData(id) {
+    return await NodeInfoRepo.getNodeInfo(id);
+}
+
+function getPopup(data) {
+    return `<div>
+              <h3>${data.tcnId}</h3>
+              <table>
+                <tr>
+                  <th>Current</th>
+                  <td>${data.trafficSituation}</td>
+                </tr>
+                <tr>
+                  <th>Time loss</th>
+                  <td>${data.averageTimeInPicture}</td>
+                </tr>
+              </table>
+            </div>`
+}
 </script>
