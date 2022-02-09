@@ -96,11 +96,19 @@ export default {
         console.log(data);
 
         layer.bindPopup(
-          `<div> <ul class="list-group">
-  <li class="list-group-item">Cars: ${data.currentCars}</li>
-  <li class="list-group-item">Trucks: ${data.currentTrucks}</li>
-  <li class="list-group-item">Situation: ${data.trafficSituation}</li>
-</ul></div>`,
+          `<div> 
+              <h3>${data.tcnId}</h3>
+              <table>
+                <tr>
+                  <th>Current</th>
+                  <td>${data.trafficSituation}</td>
+                </tr>
+                <tr>
+                  <th>Time loss</th>
+                  <td>${data.averageTimeInPicture}</td>
+                </tr>
+              </table>
+            </div>`,
           {
             maxWidth: "400",
             width: "200",
