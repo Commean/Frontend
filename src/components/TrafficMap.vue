@@ -4,7 +4,6 @@
         <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
         <l-geo-json :geojson="geojson" :options="options" />
     </l-map>
-    <div id="test">Hi</div>
 </div>
 </template>
 
@@ -87,9 +86,9 @@ export default {
 
         onEachFeature(feature, layer) {
             layer.bindPopup(`<div id=data><p>Waiting for data from Node:\n${feature.id}</p></div>`, {
-                maxWidth: "400",
-                width: "200",
+                maxWidth: 800,
                 className: "custom-popup",
+                autoClose: false,
             });
 
             layer.on("click", async function () {
@@ -105,7 +104,6 @@ export default {
                 //layer.setPopupContent('<div id="test"></div>');
             });
         },
-
     }
 };
 
