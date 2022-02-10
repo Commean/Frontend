@@ -4,6 +4,7 @@
         <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
         <l-geo-json :geojson="geojson" :options="options" />
     </l-map>
+    <div id="test">Hi</div>
 </div>
 </template>
 
@@ -14,10 +15,15 @@ import {
     LGeoJson
 } from "@vue-leaflet/vue-leaflet";
 //import NodeInfo from "./components/NodeInfo.vue";
+import Popup from "./Popup.vue";
+import {
+    createApp
+} from "vue";
 import "leaflet/dist/leaflet.css";
 import {
     RepoFactory
 } from "./../repos/RepoFactory";
+
 const GeoJsonRepo = RepoFactory.get("nodes");
 const NodeInfoRepo = RepoFactory.get("nodeInfo");
 export default {
@@ -80,16 +86,23 @@ export default {
         },
 
         onEachFeature(feature, layer) {
-            layer.bindPopup(`Waiting for data from Node:\n${feature.id}`, {
+            layer.bindPopup(`<div id=data><p>Waiting for data from Node:\n${feature.id}</p></div>`, {
                 maxWidth: "400",
                 width: "200",
                 className: "custom-popup",
             });
+
             layer.on("click", async function () {
                 const {
                     data
                 } = await getData(feature.id);
-                layer.setPopupContent(getPopup(data));
+                console.log(data)
+                createApp(
+                    Popup, {
+                        data: data
+                    }).mount(`#data`)
+
+                //layer.setPopupContent('<div id="test"></div>');
             });
         },
 
@@ -98,21 +111,5 @@ export default {
 
 async function getData(id) {
     return await NodeInfoRepo.getNodeInfo(id);
-}
-
-function getPopup(data) {
-    return `<div>
-              <h3>${data.tcnId}</h3>
-              <table>
-                <tr>
-                  <th>Current</th>
-                  <td>${data.trafficSituation}</td>
-                </tr>
-                <tr>
-                  <th>Time loss</th>
-                  <td>${data.averageTimeInPicture}</td>
-                </tr>
-              </table>
-            </div>`
 }
 </script>
