@@ -9,22 +9,24 @@
 
 <script>
 import {
+    createApp
+} from "vue";
+
+import {
     LMap,
     LTileLayer,
     LGeoJson
 } from "@vue-leaflet/vue-leaflet";
-//import NodeInfo from "./components/NodeInfo.vue";
-import Popup from "./Popup.vue";
-import {
-    createApp
-} from "vue";
 import "leaflet/dist/leaflet.css";
+
+import Popup from "./Popup.vue";
 import {
     RepoFactory
 } from "./../repos/RepoFactory";
 
 const GeoJsonRepo = RepoFactory.get("nodes");
 const NodeInfoRepo = RepoFactory.get("nodeInfo");
+
 export default {
     name: "TrafficMap",
     components: {
@@ -85,23 +87,21 @@ export default {
         },
 
         onEachFeature(feature, layer) {
-            layer.bindPopup(`<div id=data><p>Waiting for data from Node:\n${feature.id}</p></div>`, {
+            layer.bindPopup(`<div id=data data-v-app><p>Waiting for data from Node:\n${feature.id}</p></div>`, {
                 maxWidth: 800,
-                className: "custom-popup",
-                autoClose: false,
             });
 
             layer.on("click", async function () {
                 const {
                     data
                 } = await getData(feature.id);
-                console.log(data)
+                //console.log(data)
+                //console.log(document.getElementById("data"))
+
                 createApp(
                     Popup, {
                         data: data
-                    }).mount(`#data`)
-
-                //layer.setPopupContent('<div id="test"></div>');
+                    }).mount(`#data`); //TODO
             });
         },
     }
