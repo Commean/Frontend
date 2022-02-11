@@ -2,8 +2,8 @@
 <div class="popup">
     <h1>{{data.tcnId}}</h1>
     <div class="overview">
-        <h2 id="current_title">Current</h2>
-        <img id="current" :src="require('/src/assets/popup/currentSituation.svg')" alt="">
+        <h2 id="status_title">Status</h2>
+        <img id="status" :src="require('/src/assets/popup/currentSituation.svg')" alt="">
         <h2 id="time_loss_title">Time loss</h2>
         <p id="time_loss">{{data.averageTimeInPicture}} min</p>
     </div>
@@ -34,7 +34,7 @@ export default {
         getImgWidth() {
             let width = this.img.ratio * this.img.height;
             let size_car = width / this.img.car.number;
-            return (width - size_car * 2) + 'px'; //TODO
+            return (width - size_car * 1) + 'px'; //TODO
         },
     }
 
@@ -59,7 +59,7 @@ export default {
         grid-area: table;
 
         grid-template-areas:
-            'current_title current'
+            'status_title status'
             'time_loss_title time_loss';
         grid-template-columns: auto 200px;
         grid-template-rows: auto 20px;
@@ -82,12 +82,12 @@ export default {
             margin: auto 0;
         }
 
-        #current_title {
-            grid-area: current_title;
+        #status_title {
+            grid-area: status_title;
         }
 
-        #current {
-            grid-area: current;
+        #status {
+            grid-area: status;
         }
 
         #time_loss_title {
