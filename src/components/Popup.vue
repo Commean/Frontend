@@ -15,7 +15,29 @@ export default {
     name: 'Popup',
     props: {
         data: Object,
+    },
+    data() {
+        return {
+            img: {
+                ratio: 125 / 12,
+                height: 15,
+                car: {
+                    number: 5,
+                }
+            }
+        }
+    },
+    methods: {
+        getImgHeight() {
+            return this.img.height + 'px'
+        },
+        getImgWidth() {
+            let width = this.img.ratio * this.img.height;
+            let size_car = width / this.img.car.number;
+            return (width - size_car * 2) + 'px'; //TODO
+        },
     }
+
 }
 </script>
 
@@ -26,8 +48,6 @@ export default {
         'title title'
         'table table'
         'status .';
-    //grid-template-columns: auto 200px;
-    //grid-template-rows: 80px auto;
 
     h1 {
         font-size: 1.7em;
@@ -45,11 +65,11 @@ export default {
         grid-template-rows: auto 20px;
 
         img {
-            $height: 15px;
             object-fit: cover;
-            object-position: left;
-            height: #{$height};
-            width: calc(#{$height}*61/6)px;
+            object-position: right;
+            height: v-bind('getImgHeight()');
+            width: v-bind('getImgWidth()');
+
         }
 
         h2 {
