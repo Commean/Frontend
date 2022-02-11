@@ -39,7 +39,16 @@ export default {
         grid-template-areas:
             'current_title current'
             'time_loss_title time_loss';
-        grid-template-columns: auto 150px;
+        grid-template-columns: auto 200px;
+        grid-template-rows: auto 20px;
+
+        img {
+            $height: 15px;
+            object-fit: cover;
+            object-position: left;
+            height: #{$height};
+            width: calc(#{$height}*61/6)px;
+        }
 
         h2 {
             font-size: 1.2em;
