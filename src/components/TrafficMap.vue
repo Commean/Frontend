@@ -95,13 +95,12 @@ export default {
                 const {
                     data
                 } = await getData(feature.id);
-                //console.log(data)
-                //console.log(document.getElementById("data"))
-
-                createApp(
-                    Popup, {
-                        data: data
-                    }).mount(`#data`); //TODO
+                setTimeout(function () {
+                    createApp(
+                        Popup, {
+                            data: data
+                        }).mount(`#data`);
+                }, 250); // Not optimal
             });
         },
     }
