@@ -1,11 +1,11 @@
 <template>
 <div class="popup">
-    <h1>{{data.tcnId}}</h1>
+    <h1>{{data.nodeName}}</h1>
     <div class="overview">
         <h2 id="status_title">Status</h2>
         <img id="status" :src="require('/src/assets/popup/currentSituation.svg')" alt="">
         <h2 id="time_loss_title">Time loss</h2>
-        <p id="time_loss">{{data.averageTimeInPicture}} min</p>
+        <p id="time_loss">{{data.waitTime}} min</p>
     </div>
 </div>
 </template>
